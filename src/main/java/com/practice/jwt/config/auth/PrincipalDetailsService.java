@@ -1,4 +1,4 @@
-package com.practice.jwt.controller.config.auth;
+package com.practice.jwt.config.auth;
 
 import com.practice.jwt.model.User;
 import com.practice.jwt.repository.UserRepository;
@@ -16,7 +16,8 @@ public class PrincipalDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userEntity = userRepository.findByUsername(username);
-        return new PrincipalDetails(userEntity);
+        User user = userRepository.findByUsername(username);
+        System.out.println("user: " + user);
+        return new PrincipalDetails(user);
     }
 }

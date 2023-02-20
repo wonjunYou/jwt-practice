@@ -1,11 +1,9 @@
-package com.practice.jwt.controller.config;
+package com.practice.jwt.config;
 
-import com.practice.jwt.filter.MyFilter1;
 import com.practice.jwt.jwt.JwtAuthenticationFilter;
 import com.practice.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,8 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -64,7 +60,7 @@ public class SecurityConfig {
             http
                     .addFilter(corsConfig.corsFilter())
                     .addFilter(new JwtAuthenticationFilter(authenticationManager));
-//                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+//                   .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
         }
     }
 }
