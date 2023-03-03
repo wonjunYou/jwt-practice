@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.metamodel.IdentifiableType;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -57,9 +55,9 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        user.getRoleList().forEach(r -> {
+        for (String r : user.getRoleList()) {
             authorities.add(() -> r);
-        });
+        }
 
         return authorities;
     }

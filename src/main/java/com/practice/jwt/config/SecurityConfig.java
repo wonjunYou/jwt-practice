@@ -1,6 +1,7 @@
 package com.practice.jwt.config;
 
 import com.practice.jwt.jwt.JwtAuthenticationFilter;
+import com.practice.jwt.jwt.JwtAuthorizationFilter;
 import com.practice.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .apply(new MyCustomDsl()) // 커스텀 필터 등록
+                .apply(new MyCustomDsl())
                 .and()// AuthenticationManager를 파라미터로 보내야 함.
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")
@@ -59,8 +60,8 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
-//                   .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
         }
     }
 }

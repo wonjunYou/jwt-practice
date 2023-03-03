@@ -2,7 +2,6 @@ package com.practice.jwt.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.jwt.config.auth.PrincipalDetails;
 import com.practice.jwt.model.User;
@@ -18,7 +17,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
 
@@ -86,12 +84,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String jwtToken = JWT.create()
                 .withSubject("토큰이름") // 토큰 이름
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 10))) // 토큰 유효시간 설정.
+                .withExpiresAt(new Date(System.currentTimeMillis() + (JwtProperties.EXPIRATION_TIME))) // 토큰 유효시간 설정.
                 .withClaim("id", principalDetails.getUser().getId())
                 .withClaim("username", principalDetails.getUser().getUsername())
-                .sign(Algorithm.HMAC512("cos"));
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         // 응답용 헤더.
-        response.addHeader("Authorization", "Bearer "+jwtToken);
+        response.addHeader("Authorization", JwtProperties.TOKEN_PREFIX + jwtToken);
+
+        System.out.println("Bearer : " + response.getHeader(JwtProperties.HEADER_STRING));
     }
 }
